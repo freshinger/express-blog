@@ -30,17 +30,17 @@
     <link href="/css/styles.css" rel="stylesheet" />
   </head>
   <body>
-    {% block nav%} 
-    {% include "nav.html" %} 
-    {% endblock%} 
-    {% block header%}
-    {%include "header.html" %} 
-    {% endblock%}
-    {% block main%}
-    {% include "main.html" %} 
-    {% endblock%}
-    {% block footer%}
-    {% include "footer.html" %}
-    {% endblock%}
+    {% block nav %}
+      {% include "nav.html" %}
+    {% endblock %}
+    {% block header %}
+      {% include "header.html" %}
+    {% endblock %}
+    {% block main %}
+      {% include "main.html" %}
+    {% endblock %}
+    {% block footer %}
+      {% include "footer.html" %}
+    {% endblock %}
   </body>
 </html>

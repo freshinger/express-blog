@@ -1,7 +1,8 @@
-{% extends "_baseLayout.html" %} {% block main %}
+{% extends "_baseLayout.html" %} 
 
-{% for post in posts %}
-  <article class="mb-4" id="{{loop.index}}">
+{% block main %}
+
+  <article class="mb-4" id="{{post.id}}">
   <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 justify-content-center">
       <div class="col-md-10 col-lg-8 col-xl-7">
@@ -11,7 +12,7 @@
         </p>
         <img
             class="img-fluid"
-            src={{"assets/postimages/"+post.image}}
+            src={{"/assets/postimages/"+post.image}}
             alt={{post.image}}
         /></a>
         <p>
@@ -21,7 +22,6 @@
     </div>
   </div>
 </article>
-{% endfor %}
 
 
 
