@@ -1,3 +1,5 @@
+import slug from "slug";
+
 export interface IBlogPost {
   title: string;
   image: string;
@@ -55,7 +57,12 @@ export class blogPost implements IBlogPost {
   public get createdAt(): number {
     return this._createdAt;
   }
-
+  public getCreatedAtAsString(): string {
+    return new Date(this._createdAt * 1000).toLocaleString();
+  }
+  public getCreatedAtAsDate(): Date {
+    return new Date(this._createdAt * 1000);
+  }
   public set createdAt(createdAt: number) {
     this._createdAt = createdAt;
   }
@@ -77,6 +84,7 @@ export class blogPost implements IBlogPost {
 
 export class blogPostWithId extends blogPost {
   private readonly _id: number;
+  private _slug: string;
   constructor(
     title: string,
     image: string,
@@ -88,9 +96,17 @@ export class blogPostWithId extends blogPost {
   ) {
     super(title, image, author, createdAt, teaser, content);
     this._id = id;
+    this._slug = slug(title);
   }
 
   public get id(): number {
     return this._id;
+  }
+  public get slug(): string {
+    return this._slug;
+  }
+
+  public set slug(slug: string) {
+    this._slug = slug;
   }
 }
