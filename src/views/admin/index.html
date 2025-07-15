@@ -20,7 +20,13 @@
           <td>{{ post.slug }}</td>
           <td>{{ post.author }}</td>
           <td>{{ post.getCreatedAtAsString() }}</td>
-          <td><button>delete</button></td>
+          <td>
+            <form method="post" action="/admin">
+              <input type="hidden" name="id" value="{{ post.id }}" />
+              <input type="hidden" name="action" value="delete" />
+              <input type="submit" value="delete" />
+            </form>
+          </td>
         </tr>
       {% endfor %}
     </tbody>

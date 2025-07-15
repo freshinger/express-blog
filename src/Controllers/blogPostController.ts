@@ -24,19 +24,24 @@ function getPostBySlug(
 
 export const getRandomBlogPost = async (req: Request, res: Response) => {
   const posts = await getAllBlogPosts();
-  const randomid = Math.floor(Math.random() * posts.length);
+  if (typeof posts !== "boolean") {
+    const randomid = Math.floor(Math.random() * posts.length);
 
-  const blogPosts = readyData(posts);
-  const singlePost = getPostById(blogPosts, randomid);
+    const blogPosts = readyData(posts);
+    const singlePost = getPostById(blogPosts, randomid);
 
-  res.render("../views/post.html", { post: singlePost });
+    res.render("../views/post.html", { post: singlePost });
+  }
 };
 
 export const getBlogPostBySlug = async (req: Request, res: Response) => {
   const posts = await getAllBlogPosts();
-  const blogPosts = readyData(posts);
 
-  const singlePost = getPostBySlug(blogPosts, req.params.slug);
-  if (singlePost === null) res.sendStatus(404);
-  res.render("../views/post.html", { post: singlePost });
+  if (typeof posts !== "boolean") {
+    const blogPosts = readyData(posts);
+
+    const singlePost = getPostBySlug(blogPosts, req.params.slug);
+    if (singlePost === null) res.sendStatus(404);
+    res.render("../views/post.html", { post: singlePost });
+  }
 };
