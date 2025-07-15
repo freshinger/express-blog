@@ -2,7 +2,49 @@
 
 {% block content %}
   <h1>Admin Dashboard</h1>
+  <form method="post" action="/admin">
+    <input type="hidden" name="action" value="new" />
+    <label for="author-new">Author</label>
+    <input
+      type="text"
+      id="author-new"
+      name="author"
+      placeholder="author"
+      value=""
+    />
+    <label for="title-new">Title</label>
+    <input
+      type="text"
+      id="title-new"
+      name="title"
+      placeholder="title"
+      value=""
+    />
+    <label for="teaser-new">Teaser</label>
+    <input
+      type="text"
+      id="teaser-new"
+      name="teaser"
+      placeholder="teaser"
+      value=""
+    />
+    <label for="image">Image</label>
+    <select id="image" name="image" required>
+      <option value="colorful-umbrella.jpg" selected>Colorful Umbrella</option>
+      <option value="flowers.jpg">Flowers</option>
+      <option value="sailing.jpg">Sailing</option>
+    </select>
 
+    <label for="content-new">Content</label>
+    <textarea
+      type="text"
+      id="content-new"
+      name="content"
+      placeholder="content"
+      value=""
+    ></textarea>
+    <input type="submit" value="create" />
+  </form>
   <table>
     <thead>
       <tr>
@@ -26,9 +68,60 @@
               <input type="hidden" name="action" value="delete" />
               <input type="submit" value="delete" />
             </form>
+            <button
+              class="contrast"
+              data-target="modal-{{ post.id }}"
+              data-post="{{ post.id }}"
+              onclick="toggleModal(event)"
+            >
+              edit
+            </button>
           </td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
+{% endblock %}
+
+{% block scripts %}
+  {% for post in posts %}
+    <dialog id="modal-{{ post.id }}">
+      <article>
+        <header>
+          <button
+            aria-label="Close"
+            rel="prev"
+            data-target="modal-{{ post.id }}"
+            onclick="toggleModal(event)"
+          ></button>
+          <h3>edit post number {{ post.id }}!</h3>
+        </header>
+        <form method="post" action="/admin">
+          <input type="hidden" name="id" value="{{ post.id }}" />
+          <input type="hidden" name="action" value="edit" />
+          <label for="author-{{ post.id }}">Author</label>
+          <input
+            type="text"
+            id="author-{{ post.id }}"
+            name="author"
+            placeholder="Text"
+            value="{{ post.author }}"
+          />
+          <input type="submit" value="save" />
+        </form>
+        <footer>
+          <button
+            role="button"
+            class="secondary"
+            data-target="modal-{{ post.id }}"
+            onclick="toggleModal(event)"
+          >
+            Cancel
+          </button>
+        </footer>
+      </article>
+    </dialog>
+  {% endfor %}
+
+  <script src="/js/modal.js"></script>
 {% endblock %}

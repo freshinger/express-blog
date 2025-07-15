@@ -39,3 +39,35 @@ export async function deletePost(id: number): Promise<boolean> {
     return false;
   }
 }
+
+export async function editPost(id: number, author: string): Promise<boolean> {
+  try {
+    let blogPosts = await getAllBlogPosts();
+    if (typeof blogPosts !== "boolean") {
+      blogPosts.map((post, i) => {
+        if (i === id) {
+          post.author = author;
+        }
+      });
+      const success = await savePosts(blogPosts);
+      return success;
+    }
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
+
+export async function newPost(post: blogPost): Promise<boolean> {
+  try {
+    let blogPosts = await getAllBlogPosts();
+    if (typeof blogPosts !== "boolean") {
+      blogPosts.push(post);
+      const success = await savePosts(blogPosts);
+      return success;
+    }
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
