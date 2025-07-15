@@ -66,16 +66,16 @@ export const adminEditController = async (req: Request, res: Response) => {
 export const adminNewController = async (req: Request, res: Response) => {
   const validationresult = validationResult(req);
   if (validationresult.isEmpty()) {
-    const result = await newPost(
-      new blogPost(
-        req.body.title,
-        req.body.image,
-        req.body.author,
-        Date.now() / 1000,
-        req.body.teaser,
-        req.body.content,
-      ),
+    const blog = new blogPost(
+      req.body.title,
+      req.body.image,
+      req.body.author,
+      Math.floor(Date.now() / 1000),
+      req.body.teaser,
+      req.body.content,
     );
+    console.log(blog);
+    const result = await newPost(blog);
 
     if (result) {
       res.redirect("/admin");

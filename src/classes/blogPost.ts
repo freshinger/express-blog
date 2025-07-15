@@ -10,12 +10,12 @@ export interface IBlogPost {
 }
 
 export class blogPost implements IBlogPost {
-  private _title: string;
-  private _image: string;
-  private _author: string;
-  private _createdAt: number;
-  private _teaser: string;
-  private _content: string;
+  #title: string;
+  #image: string;
+  #author: string;
+  #createdAt: number;
+  #teaser: string;
+  #content: string;
 
   constructor(
     title: string,
@@ -25,66 +25,77 @@ export class blogPost implements IBlogPost {
     teaser: string,
     content: string,
   ) {
-    this._title = title;
-    this._image = image;
-    this._author = author;
-    this._createdAt = createdAt;
-    this._teaser = teaser;
-    this._content = content;
+    this.#title = title;
+    this.#image = image;
+    this.#author = author;
+    this.#createdAt = createdAt;
+    this.#teaser = teaser;
+    this.#content = content;
+  }
+
+  toJSON() {
+    return {
+      title: this.#title,
+      image: this.#image,
+      author: this.#author,
+      createdAt: this.#createdAt,
+      teaser: this.#teaser,
+      content: this.#content,
+    };
   }
 
   public get title(): string {
-    return this._title;
+    return this.#title;
   }
 
   public set title(title: string) {
-    this._title = title;
+    this.#title = title;
   }
   public get image(): string {
-    return this._image;
+    return this.#image;
   }
 
   public set image(image: string) {
-    this._image = image;
+    this.#image = image;
   }
   public get author(): string {
-    return this._author;
+    return this.#author;
   }
 
   public set author(author: string) {
-    this._author = author;
+    this.#author = author;
   }
   public get createdAt(): number {
-    return this._createdAt;
+    return this.#createdAt;
   }
   public getCreatedAtAsString(): string {
-    return new Date(this._createdAt * 1000).toLocaleString();
+    return new Date(this.#createdAt * 1000).toLocaleString();
   }
   public getCreatedAtAsDate(): Date {
-    return new Date(this._createdAt * 1000);
+    return new Date(this.#createdAt * 1000);
   }
   public set createdAt(createdAt: number) {
-    this._createdAt = createdAt;
+    this.#createdAt = createdAt;
   }
   public get teaser(): string {
-    return this._teaser;
+    return this.#teaser;
   }
 
   public set teaser(teaser: string) {
-    this._teaser = teaser;
+    this.#teaser = teaser;
   }
   public get content(): string {
-    return this._content;
+    return this.#content;
   }
 
   public set content(content: string) {
-    this._content = content;
+    this.#content = content;
   }
 }
 
 export class blogPostWithId extends blogPost {
-  private readonly _id: number;
-  private _slug: string;
+  readonly #id: number;
+  #slug: string;
   constructor(
     title: string,
     image: string,
@@ -95,18 +106,18 @@ export class blogPostWithId extends blogPost {
     id: number,
   ) {
     super(title, image, author, createdAt, teaser, content);
-    this._id = id;
-    this._slug = slug(title);
+    this.#id = id;
+    this.#slug = slug(title);
   }
 
   public get id(): number {
-    return this._id;
+    return this.#id;
   }
   public get slug(): string {
-    return this._slug;
+    return this.#slug;
   }
 
   public set slug(slug: string) {
-    this._slug = slug;
+    this.#slug = slug;
   }
 }
