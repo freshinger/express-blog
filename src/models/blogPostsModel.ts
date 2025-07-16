@@ -40,13 +40,18 @@ export async function deletePost(id: number): Promise<boolean> {
   }
 }
 
-export async function editPost(id: number, author: string): Promise<boolean> {
+export async function editPost(
+  id: number,
+  author: string,
+  title: string,
+): Promise<boolean> {
   try {
     let blogPosts = await getAllBlogPosts();
     if (typeof blogPosts !== "boolean") {
       blogPosts.map((post, i) => {
         if (i === id) {
           post.author = author;
+          post.title = title;
         }
       });
       const success = await savePosts(blogPosts);
