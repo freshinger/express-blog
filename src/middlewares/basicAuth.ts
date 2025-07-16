@@ -18,6 +18,10 @@ export const basicAuth = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers["authorization"];
 
   if (!authHeader || !authHeader.startsWith("Basic ")) {
+    res.setHeader(
+      "WWW-Authenticate",
+      'Basic realm="User Visible Realm", charset="UTF-8"',
+    );
     res.status(401).send("Unauthorized");
     return;
   }
