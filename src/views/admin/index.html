@@ -92,7 +92,7 @@
             data-target="modal-{{ post.id }}"
             onclick="toggleModal(event)"
           ></button>
-          <h3>edit post number {{ post.id }}!</h3>
+          <h3>edit post {{ post.slug }}</h3>
         </header>
         <form method="post" action="/admin">
           <input type="hidden" name="id" value="{{ post.id }}" />
