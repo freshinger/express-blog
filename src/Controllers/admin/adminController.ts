@@ -50,7 +50,12 @@ export const adminEditController = async (req: Request, res: Response) => {
   if (typeof ID == "number") {
     const validationresult = validationResult(req);
     if (validationresult.isEmpty()) {
-      const result = await editPost(ID, req.body.author, req.body.title);
+      const result = await editPost(
+        ID,
+        req.body.author,
+        req.body.title,
+        req.body.content,
+      );
 
       if (result) {
         res.redirect("/admin");

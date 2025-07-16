@@ -37,11 +37,10 @@
 
     <label for="content-new">Content</label>
     <textarea
-      type="text"
+      class="editable"
       id="content-new"
       name="content"
       placeholder="content"
-      value=""
     ></textarea>
     <input type="submit" value="create" />
   </form>
@@ -113,6 +112,15 @@
             placeholder="Text"
             value="{{ post.title }}"
           />
+          <label for="content-{{ post.id }}">Content</label>
+          <textarea
+            class="editable"
+            id="content-{{ post.id }}"
+            name="content"
+            placeholder="content"
+          >
+{{ post.content | unescape | safe }}</textarea
+          >
           <input type="submit" value="save" />
         </form>
         <footer>

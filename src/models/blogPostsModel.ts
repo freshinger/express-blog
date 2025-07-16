@@ -44,6 +44,7 @@ export async function editPost(
   id: number,
   author: string,
   title: string,
+  content: string,
 ): Promise<boolean> {
   try {
     let blogPosts = await getAllBlogPosts();
@@ -52,6 +53,7 @@ export async function editPost(
         if (i === id) {
           post.author = author;
           post.title = title;
+          post.content = content;
         }
       });
       const success = await savePosts(blogPosts);
