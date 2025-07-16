@@ -1,15 +1,14 @@
 import express from "express";
 import {
   adminController,
-  adminDeleteController,
   adminPostController,
 } from "../Controllers/admin/adminController";
-import { body, validationResult } from "express-validator";
+import { body } from "express-validator";
 
 const router = express.Router();
 
 router.get("/", adminController);
-//router.delete("/:id", adminDeleteController);
+
 router.post(
   "/",
   body("author").if(body("author").notEmpty()).escape(),

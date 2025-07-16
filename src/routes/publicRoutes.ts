@@ -6,6 +6,9 @@ import {
 } from "../Controllers/blogPostController";
 import { contactController } from "../Controllers/contactController";
 import { indexController } from "../Controllers/indexController";
+import { loginController } from "../Controllers/loginController";
+import { credentialsController } from "../Controllers/credentialsController";
+import { body } from "express-validator";
 
 const router = express.Router();
 
@@ -14,6 +17,13 @@ router
   .get("/about", aboutController)
   .get("/post", getRandomBlogPost)
   .get("/post/:slug", getBlogPostBySlug)
-  .get("/contact", contactController);
+  .get("/contact", contactController)
+  .get("/login", loginController)
+  .post(
+    "/login",
+    body("username").if(body("username").notEmpty()).escape(),
+    body("password").if(body("password").notEmpty()).escape(),
+    credentialsController,
+  );
 
 export default router;
