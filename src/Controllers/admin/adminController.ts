@@ -55,6 +55,7 @@ export const adminEditController = async (req: Request, res: Response) => {
         req.body.author,
         req.body.title,
         req.body.content,
+        req.body.teaser,
       );
 
       if (result) {

@@ -28,13 +28,13 @@
       placeholder="teaser"
       value=""
     />
+    {# TODO: possibility to upload image  #}
     <label for="image">Image</label>
     <select id="image" name="image" required>
       <option value="colorful-umbrella.jpg" selected>Colorful Umbrella</option>
       <option value="flowers.jpg">Flowers</option>
       <option value="sailing.jpg">Sailing</option>
     </select>
-
     <label for="content-new">Content</label>
     <textarea
       class="editable"
@@ -112,6 +112,15 @@
             placeholder="Text"
             value="{{ post.title }}"
           />
+          <label for="teaser-{{ post.id }}">Teaser</label>
+          <input
+            type="text"
+            id="teaser-{{ post.id }}"
+            name="teaser"
+            placeholder="teaser"
+            value="{{ post.teaser }}"
+          />
+          {# TODO: possibility to change or upload image  #}
           <label for="content-{{ post.id }}">Content</label>
           <textarea
             class="editable"

@@ -45,6 +45,7 @@ export async function editPost(
   author: string,
   title: string,
   content: string,
+  teaser: string,
 ): Promise<boolean> {
   try {
     let blogPosts = await getAllBlogPosts();
@@ -54,6 +55,7 @@ export async function editPost(
           post.author = author;
           post.title = title;
           post.content = content;
+          post.teaser = teaser;
         }
       });
       const success = await savePosts(blogPosts);
