@@ -1,13 +1,6 @@
 {% extends "../_adminLayout.html" %}
 
 {% block content %}
-  <details name="create">
-    <summary>New Post</summary>
-    {% include './_newPostForm.html' %}
-  </details>
-
-  <hr />
-
   <details name="list" open>
     <summary>Blog List</summary>
     {% include './_postList.html' %}

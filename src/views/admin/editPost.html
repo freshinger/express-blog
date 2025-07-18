@@ -1,0 +1,48 @@
+{% extends "../_adminLayout.html" %}
+
+{% block content %}
+  <details name="edit" open>
+    <summary>Edit Post {{ post.title }}</summary>
+    <header>
+      <h3>edit post {{ post.slug }}</h3>
+    </header>
+    <form method="post" action="/admin/edit">
+      <input type="hidden" name="id" value="{{ post.id }}" />
+      <label for="author-{{ post.id }}">Author</label>
+      <input
+        type="text"
+        id="author-{{ post.id }}"
+        name="author"
+        placeholder="Text"
+        value="{{ post.author }}"
+      />
+      <label for="title-{{ post.id }}">Title</label>
+      <input
+        type="text"
+        id="title-{{ post.id }}"
+        name="title"
+        placeholder="Text"
+        value="{{ post.title }}"
+      />
+      <label for="teaser-{{ post.id }}">Teaser</label>
+      <input
+        type="text"
+        id="teaser-{{ post.id }}"
+        name="teaser"
+        placeholder="teaser"
+        value="{{ post.teaser }}"
+      />
+      {# TODO: possibility to change or upload image  #}
+      <label for="content-{{ post.id }}">Content</label>
+      <textarea
+        class="editable"
+        id="content-{{ post.id }}"
+        name="content"
+        placeholder="content"
+      >
+{{ post.content | unescape | safe }}</textarea
+      >
+      <input type="submit" value="save" />
+    </form>
+  </details>
+{% endblock %}

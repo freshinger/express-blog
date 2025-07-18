@@ -96,8 +96,12 @@ export async function getBlogPostBySlug(slug: string): Promise<blogPost> {
       WHERE
        slug = ? ORDER BY createdAt DESC LIMIT 1;`,
       slug,
-      (err, row) => {
-        resolve(row);
+      (err: Error | null, row: blogPost) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(row);
+        }
       },
     );
   });
@@ -162,7 +166,7 @@ export async function createNewPost(post: IBlogPost): Promise<number> {
 }
 
 /**
- * Deletes a Post and stores it into history table
+ * Deletes a Post
  * @param id
  * @returns
  */
@@ -175,7 +179,7 @@ export async function deletePost(id: number): Promise<sqlite3.Database> {
 
 /**
  *
- * @param id edits a post and stores it's history
+ * @param id edits a post
  * @param blogPost
  * @returns
  */
