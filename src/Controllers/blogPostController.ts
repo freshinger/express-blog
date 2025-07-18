@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 import {
   getBlogPostBySlug,
   getBlogPostByID,
-  getBlogPostCount,
   getAllBlogPosts,
 } from "../models/blogPostsModel";
 

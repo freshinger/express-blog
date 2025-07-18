@@ -36,5 +36,7 @@ export const indexController = async (req: Request, res: Response) => {
   res.render("../views/index.html", {
     posts: blogPosts,
     page,
+    postCount: posts.length,
+    pageSize,
   });
 };

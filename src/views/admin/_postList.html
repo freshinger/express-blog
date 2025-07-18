@@ -3,6 +3,7 @@
     <thead>
       <tr>
         <th scope="col">slug</th>
+        <th scope="col">title</th>
         <th scope="col">author</th>
         <th scope="col">createdAt</th>
         <th scope="col">Action</th>
@@ -12,22 +13,29 @@
       {% for post in posts %}
         <tr>
           <td scope="row">{{ post.slug }}</td>
+          <td>{{ post.title }}</td>
           <td>{{ post.author }}</td>
           <td>{{ post.createdAt | unixtimeAsString }}</td>
           <td>
-            <form method="post" action="/admin">
-              <input type="hidden" name="id" value="{{ post.id }}" />
-              <input type="hidden" name="action" value="delete" />
-              <input type="submit" value="delete" />
-            </form>
-            <button
-              class="contrast"
-              data-target="modal-{{ post.id }}"
-              data-post="{{ post.id }}"
-              onclick="toggleModal(event)"
-            >
-              edit
-            </button>
+            <div class="grid">
+              <div>
+                <form method="post" action="/admin">
+                  <input type="hidden" name="id" value="{{ post.id }}" />
+                  <input type="hidden" name="action" value="delete" />
+                  <input type="submit" value="delete" />
+                </form>
+              </div>
+              <div>
+                <button
+                  class="contrast"
+                  data-target="modal-{{ post.id }}"
+                  data-post="{{ post.id }}"
+                  onclick="toggleModal(event)"
+                >
+                  edit
+                </button>
+              </div>
+            </div>
           </td>
         </tr>
       {% endfor %}

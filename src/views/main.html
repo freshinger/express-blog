@@ -1,45 +1,56 @@
 <div class="container px-4 px-lg-5">
   <div class="row gx-4 gx-lg-5 justify-content-center">
     <div class="col-md-10 col-lg-8 col-xl-7">
-      {% for post in posts %}
-        <!-- Post preview-->
-        <div class="post-preview">
-          <a href="post/{{ post.slug }}">
-            <h2 class="post-title">{{ post.title }}</h2>
-            <h3 class="post-subtitle">{{ post.teaser }}</h3>
-          </a>
-          <p class="post-meta">
-            Posted by
-            <a href="#!">{{ post.author }}</a>
-            {{ post.createdAt | unixtimeAsString }}
-          </p>
-        </div>
-        <!-- Divider-->
-        <hr class="my-4" />
-      {% endfor %}
+      {% if posts and postCount > 0 %}
 
-      <!-- Pager-->
-      {% if page == 0 %}
-        <div class="d-flex justify-content-end mb-4">
+        {% for post in posts %}
+          <!-- Post preview-->
+          <div class="post-preview">
+            <a href="post/{{ post.slug }}">
+              <h2 class="post-title">{{ post.title }}</h2>
+              <h3 class="post-subtitle">{{ post.teaser }}</h3>
+            </a>
+            <p class="post-meta">
+              Posted by
+              <a href="#!">{{ post.author }}</a>
+              {{ post.createdAt | unixtimeAsString }}
+            </p>
+          </div>
+          <!-- Divider-->
+          <hr class="my-4" />
+        {% endfor %}
+
+        <!-- Pager-->
+        {% if page == 0 %}
+          <div class="d-flex justify-content-end mb-4">
+            <a
+              class="btn btn-primary text-uppercase"
+              href="/?page={{ page + 1 }}&pageSize={{ pageSize }}"
+              >Older Posts</a
+            >
+          </div>
+        {% elif (((page + 1) * pageSize) < postCount) %}
+          <div class="d-flex   mb-4" style="justify-content: space-between">
+            <a
+              class="btn btn-primary text-uppercase"
+              href="/?page={{ page - 1 }}&pageSize={{ pageSize }}"
+              >Newer Posts</a
+            >
+            <a
+              class="btn btn-primary text-uppercase"
+              href="/?page={{ page + 1 }}&pageSize={{ pageSize }}"
+              >Older Posts</a
+            >
+          </div>
+        {% else %}
           <a
             class="btn btn-primary text-uppercase"
-            href="/?page={{ page + 1 }}&pageSize=5"
-            >Older Posts →</a
-          >
-        </div>
-      {% else %}
-        <div class="d-flex   mb-4" style="justify-content: space-between">
-          <a
-            class="btn btn-primary text-uppercase"
-            href="/?page={{ page - 1 }}&pageSize=5"
+            href="/?page={{ page - 1 }}&pageSize={{ pageSize }}"
             >Newer Posts</a
           >
-          <a
-            class="btn btn-primary text-uppercase"
-            href="/?page={{ page + 1 }}&pageSize=5"
-            >Older Posts →</a
-          >
-        </div>
+        {% endif %}
+      {% else %}
+        <p>no posts on this page, yet.</p>
       {% endif %}
     </div>
   </div>
