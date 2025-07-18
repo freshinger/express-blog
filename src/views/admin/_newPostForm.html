@@ -1,3 +1,13 @@
+{% if error %}
+  <article class="pico-background-red-500">
+    Error!
+    <ul>
+      {% for err in error %}
+        <li class="pico-background-red-500">{{ err.msg }} in {{ err.path }}</li>
+      {% endfor %}
+    </ul>
+  </article>
+{% endif %}
 <form method="post" action="/admin/new">
   <input type="hidden" name="action" value="new" />
   <label for="author-new">Author</label>
@@ -6,17 +16,23 @@
     id="author-new"
     name="author"
     placeholder="author"
-    value=""
+    value="{% if post %}{{ post.author }}{% endif %}"
   />
   <label for="title-new">Title</label>
-  <input type="text" id="title-new" name="title" placeholder="title" value="" />
+  <input
+    type="text"
+    id="title-new"
+    name="title"
+    placeholder="title"
+    value="{% if post %}{{ post.title }}{% endif %}"
+  />
   <label for="teaser-new">Teaser</label>
   <input
     type="text"
     id="teaser-new"
     name="teaser"
     placeholder="teaser"
-    value=""
+    value="{% if post %}{{ post.teaser }}{% endif %}"
   />
   {# TODO: possibility to upload image  #}
   <label for="image">Image</label>
@@ -31,6 +47,8 @@
     id="content-new"
     name="content"
     placeholder="content"
-  ></textarea>
+  >
+{% if post %}{{ post.content | unescape | safe }}{% endif %}</textarea
+  >
   <input type="submit" value="create" />
 </form>

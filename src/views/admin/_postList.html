@@ -2,31 +2,40 @@
   <table>
     <thead>
       <tr>
+        <th scope="col">edit</th>
         <th scope="col">slug</th>
         <th scope="col">title</th>
         <th scope="col">author</th>
         <th scope="col">createdAt</th>
-        <th scope="col">Action</th>
+        <th scope="col">delete</th>
       </tr>
     </thead>
     <tbody>
       {% for post in posts %}
         <tr>
-          <td scope="row">{{ post.slug }}</td>
-          <td>{{ post.title }}</td>
-          <td>{{ post.author }}</td>
-          <td>{{ post.createdAt | unixtimeAsString }}</td>
-          <td>
+          <td scope="row">
             <div class="grid">
               <div>
                 <a href="/admin/editPost.html?id={{ post.id }}">
                   <button>edit</button>
                 </a>
               </div>
+            </div>
+          </td>
+          <td>{{ post.slug }}</td>
+          <td>{{ post.title }}</td>
+          <td>{{ post.author }}</td>
+          <td>{{ post.createdAt | unixtimeAsString }}</td>
+          <td>
+            <div class="grid">
               <div>
                 <form method="post" action="/admin/delete">
                   <input type="hidden" name="id" value="{{ post.id }}" />
-                  <input type="submit" value="delete" />
+                  <input
+                    type="submit"
+                    value="delete"
+                    class="pico-background-red-500"
+                  />
                 </form>
               </div>
             </div>

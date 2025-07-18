@@ -1,4 +1,5 @@
-import { IBlogPost } from "./blogPost";
+import { getDB } from "../db/database";
+import { getAllSlugs } from "../models/blogPostsModel";
 
 /**
  * a slug is used in the url. slugs have to be unique for SEO and web crawler purposes.
@@ -7,29 +8,29 @@ import { IBlogPost } from "./blogPost";
  * @param blogPost
  * @returns
  */
-//TODO: refactor to use DB
-export function slugFactory(blogPost: IBlogPost): IBlogPost {
-  let blogPostTitles = new Map<string, number>(); // get all existing blog post slugs from blog table and history
-  //increment slug if it already exixts
-  if (!blogPostTitles.has(blogPost.slug)) {
-    blogPostTitles.set(blogPost.slug, 0);
-  } else {
-    let index = blogPostTitles.get(blogPost.slug);
-    if (index !== undefined) {
-      if (
-        index !==
-        Number.parseInt(blogPost.slug.slice(blogPost.slug.lastIndexOf("-")))
-      ) {
-        index++;
-        blogPostTitles.set(blogPost.slug, index);
-        blogPost.slug += "-" + index.toString();
-      } else {
-        index++;
-        blogPostTitles.set(blogPost.slug, index);
-        blogPost.slug =
-          blogPost.slug.slice(0, blogPost.slug.lastIndexOf("-")) + index;
-      }
+export async function slugFactory(slug: string): Promise<string> {
+  const db = getDB();
+  // get all existing blog post slugs from blog table and history
+  const slugs = await getAllSlugs();
+  let blogPostSlugs = new Map<string, number>();
+  let index = 0;
+  slugs.forEach(({ slug }) => {
+    let suffix = Number.parseInt(slug.slice(slug.lastIndexOf("-") + 1));
+    blogPostSlugs.set(slug, isNaN(suffix) ? 0 : suffix);
+    index++;
+  });
+  //increment slug if it already exists
+  while (blogPostSlugs.has(slug)) {
+    let incrementor = blogPostSlugs.get(slug);
+    (incrementor as number)++;
+    blogPostSlugs.set(slug, incrementor!);
+    if (slug.indexOf("-") === -1) {
+      slug += "-" + incrementor;
+    } else {
+      slug =
+        slug.slice(0, slug.lastIndexOf("-") + 1) +
+        (Number.parseInt(slug.slice(slug.lastIndexOf("-") + 1)) + 1);
     }
   }
-  return blogPost;
+  return slug;
 }

@@ -22,7 +22,9 @@ export const adminNewController = async (req: Request, res: Response) => {
       res.sendStatus(500);
     }
   } else {
-    res.sendStatus(400);
-    //res.status(400).render("../views/admin/index.html");
+    res.status(400).render("../views/admin/newPost.html", {
+      post: req.body,
+      error: validationresult.array(),
+    });
   }
 };

@@ -1,6 +1,32 @@
-import { blogPost, IBlogPost } from "../classes/blogPost";
+import { blogPost } from "../classes/blogPost";
+import { slugFactory } from "../classes/slugFactory";
 import { getDB } from "../db/database";
 import sqlite3 from "sqlite3";
+
+export async function getAllSlugs(): Promise<{ slug: string }[]> {
+  const db = getDB();
+  return new Promise((resolve, reject) => {
+    db.all<{ slug: string }>(
+      `SELECT 
+        slug 
+       FROM 
+        blog_entries 
+        UNION 
+       SELECT 
+        slug 
+       FROM 
+       blog_entries_history;`,
+      [],
+      (err: Error | null, slugs: { slug: string }[]) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(slugs);
+        }
+      },
+    );
+  });
+}
 
 export async function getAllBlogPosts(): Promise<blogPost[]> {
   const db = getDB();
@@ -114,9 +140,9 @@ export async function getBlogPostBySlug(slug: string): Promise<blogPost> {
  * @returns
  */
 
-export async function createNewPost(post: IBlogPost): Promise<number> {
+export async function createNewPost(post: blogPost): Promise<number> {
   const db = getDB();
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     const insertStatement = db.prepare(
       `INSERT INTO  
       blog_entries
@@ -142,6 +168,7 @@ export async function createNewPost(post: IBlogPost): Promise<number> {
       ?
       );`,
     );
+    const slug = await slugFactory(post.slug);
     insertStatement.run(
       post.title,
       post.image,
@@ -149,7 +176,7 @@ export async function createNewPost(post: IBlogPost): Promise<number> {
       post.createdAt,
       post.teaser,
       post.content,
-      post.slug, //TODO: use slug factory
+      slug,
     );
     insertStatement.finalize();
     db.get(
@@ -185,7 +212,7 @@ export async function deletePost(id: number): Promise<sqlite3.Database> {
  */
 export async function editPost(
   id: number,
-  blogPost: IBlogPost,
+  blogPost: blogPost,
 ): Promise<sqlite3.Database> {
   const db = getDB();
   return new Promise((resolve, reject) => {
