@@ -1,4 +1,4 @@
-import sqlite3 from "sqlite3";
+import sqlite3, { Database } from "sqlite3";
 import path from "path";
 
 const dbInstance = sqlite3.verbose();
@@ -18,28 +18,64 @@ export function connectDB(): Promise<sqlite3.Database> {
           reject(err);
         } else {
           console.log("Connected to the SQLite database.");
-          db!.run(
-            `
-                    CREATE TABLE IF NOT EXISTS blog_entries (
+          resolve(db as sqlite3.Database);
+        }
+      },
+    );
+  });
+}
+
+export function createBlogEntryTable(db: Database): Promise<sqlite3.Database> {
+  return new Promise((resolve, reject) => {
+    db!.run(
+      `CREATE TABLE IF NOT EXISTS blog_entries (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         title TEXT NOT NULL,
                         teaser TEXT NOT NULL,
                         author TEXT NOT NULL,
-                        createdAt TEXT NOT NULL,
+                        createdAt INTEGER NOT NULL,
                         image TEXT NOT NULL,
-                        content TEXT NOT NULL
-                    )
+                        content TEXT NOT NULL,
+                        slug TEXT NOT NULL
+                    );
                 `,
-            (createErr: Error | null) => {
-              if (createErr) {
-                console.error("Error creating table:", createErr.message);
-                reject(createErr);
-              } else {
-                console.log("Blog table checked/created.");
-                resolve(db as sqlite3.Database);
-              }
-            },
-          );
+      (createErr: Error | null) => {
+        if (createErr) {
+          console.error("Error creating table:", createErr.message);
+          reject(createErr);
+        } else {
+          console.log("Blog table checked/created.");
+          resolve(db as sqlite3.Database);
+        }
+      },
+    );
+  });
+}
+
+export function createBlogEntryHistoryTable(
+  db: Database,
+): Promise<sqlite3.Database> {
+  return new Promise((resolve, reject) => {
+    db!.run(
+      `CREATE TABLE IF NOT EXISTS blog_entries_history (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        title TEXT NOT NULL,
+                        teaser TEXT NOT NULL,
+                        author TEXT NOT NULL,
+                        createdAt INTEGER NOT NULL,
+                        image TEXT NOT NULL,
+                        content TEXT NOT NULL,
+                        slug TEXT NOT NULL,
+                        historyTo INTEGER NOT NULL
+                    );
+                `,
+      (createErr: Error | null) => {
+        if (createErr) {
+          console.error("Error creating table:", createErr.message);
+          reject(createErr);
+        } else {
+          console.log("BlogHistory table checked/created.");
+          resolve(db as sqlite3.Database);
         }
       },
     );

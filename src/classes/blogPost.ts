@@ -1,49 +1,53 @@
 import slug from "slug";
 
 export interface IBlogPost {
+  id: number;
   title: string;
   image: string;
   author: string;
   createdAt: number;
   teaser: string;
   content: string;
+  slug: string;
 }
 
 export class blogPost implements IBlogPost {
+  #id: number;
   #title: string;
   #image: string;
   #author: string;
   #createdAt: number;
   #teaser: string;
   #content: string;
+  #slug: string;
 
   constructor(
-    title: string,
-    image: string,
-    author: string,
-    createdAt: number,
-    teaser: string,
-    content: string,
+    id?: number,
+    title?: string,
+    image?: string,
+    author?: string,
+    createdAt?: number,
+    teaser?: string,
+    content?: string,
+    slug?: string,
   ) {
-    this.#title = title;
-    this.#image = image;
-    this.#author = author;
-    this.#createdAt = createdAt;
-    this.#teaser = teaser;
-    this.#content = content;
+    this.#id = id ?? 0;
+    this.#title = title ?? "";
+    this.#image = image ?? "";
+    this.#author = author ?? "";
+    this.#createdAt = createdAt ?? 0;
+    this.#teaser = teaser ?? "";
+    this.#content = content ?? "";
+    this.#slug = slug ?? "";
   }
 
-  toJSON() {
-    return {
-      title: this.#title,
-      image: this.#image,
-      author: this.#author,
-      createdAt: this.#createdAt,
-      teaser: this.#teaser,
-      content: this.#content,
-    };
+  public get id(): number {
+    return this.#id;
   }
 
+  public set id(id: number) {
+    this.#id = id;
+  }
   public get title(): string {
     return this.#title;
   }
@@ -91,33 +95,15 @@ export class blogPost implements IBlogPost {
   public set content(content: string) {
     this.#content = content;
   }
-}
-
-export class blogPostWithId extends blogPost {
-  readonly #id: number;
-  #slug: string;
-  constructor(
-    title: string,
-    image: string,
-    author: string,
-    createdAt: number,
-    teaser: string,
-    content: string,
-    id: number,
-  ) {
-    super(title, image, author, createdAt, teaser, content);
-    this.#id = id;
-    this.#slug = slug(title);
-  }
-
-  public get id(): number {
-    return this.#id;
-  }
   public get slug(): string {
     return this.#slug;
   }
 
   public set slug(slug: string) {
     this.#slug = slug;
+  }
+
+  public createSlugFromTitle() {
+    this.#slug = slug(this.#title);
   }
 }

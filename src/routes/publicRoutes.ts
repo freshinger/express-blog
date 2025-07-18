@@ -2,7 +2,7 @@ import express from "express";
 import { aboutController } from "../Controllers/aboutController";
 import {
   getRandomBlogPost,
-  getBlogPostBySlug,
+  getBlogPost,
 } from "../Controllers/blogPostController";
 import { contactController } from "../Controllers/contactController";
 import { indexController } from "../Controllers/indexController";
@@ -16,7 +16,7 @@ router
   .get("/", indexController)
   .get("/about", aboutController)
   .get("/post", getRandomBlogPost)
-  .get("/post/:slug", getBlogPostBySlug)
+  .get("/post/:slug", getBlogPost)
   .get("/contact", contactController)
   .get("/login", loginController)
   .post(

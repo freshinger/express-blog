@@ -1,14 +1,13 @@
 import { Request, Response } from "express";
-import { readyData } from "../util/readyData";
 import { getAllBlogPosts } from "../models/blogPostsModel";
-import { blogPostWithId } from "../classes/blogPost";
+import { blogPost } from "../classes/blogPost";
 
 function paginate(
-  posts: blogPostWithId[],
+  posts: blogPost[],
   pageSize: number,
   page: number,
-): blogPostWithId[] {
-  const pages: blogPostWithId[][] = [];
+): blogPost[] {
+  const pages: blogPost[][] = [];
 
   for (let i = 0; i < posts.length; i += pageSize) {
     const chunk = posts.slice(i, i + pageSize);
@@ -32,13 +31,7 @@ export const indexController = async (req: Request, res: Response) => {
   }
 
   const posts = await getAllBlogPosts();
-  let blogPosts;
-  if (typeof posts !== "boolean") {
-    blogPosts = readyData(posts);
-  }
-  if (typeof blogPosts !== "undefined") {
-    blogPosts = paginate(blogPosts, pageSize, page);
-  }
+  const blogPosts = paginate(posts, pageSize, page);
 
   res.render("../views/index.html", {
     posts: blogPosts,

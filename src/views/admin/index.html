@@ -2,149 +2,86 @@
 
 {% block content %}
   <h1>Admin Dashboard</h1>
-  <form method="post" action="/admin">
-    <input type="hidden" name="action" value="new" />
-    <label for="author-new">Author</label>
-    <input
-      type="text"
-      id="author-new"
-      name="author"
-      placeholder="author"
-      value=""
-    />
-    <label for="title-new">Title</label>
-    <input
-      type="text"
-      id="title-new"
-      name="title"
-      placeholder="title"
-      value=""
-    />
-    <label for="teaser-new">Teaser</label>
-    <input
-      type="text"
-      id="teaser-new"
-      name="teaser"
-      placeholder="teaser"
-      value=""
-    />
-    {# TODO: possibility to upload image  #}
-    <label for="image">Image</label>
-    <select id="image" name="image" required>
-      <option value="colorful-umbrella.jpg" selected>Colorful Umbrella</option>
-      <option value="flowers.jpg">Flowers</option>
-      <option value="sailing.jpg">Sailing</option>
-    </select>
-    <label for="content-new">Content</label>
-    <textarea
-      class="editable"
-      id="content-new"
-      name="content"
-      placeholder="content"
-    ></textarea>
-    <input type="submit" value="create" />
-  </form>
-  <table>
-    <thead>
-      <tr>
-        <th scope="col">slug</th>
-        <th scope="col">author</th>
-        <th scope="col">createdAt</th>
-        <th scope="col">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for post in posts %}
-        <tr>
-          <td scope="row">{{ post.slug }}</td>
-          <td>{{ post.author }}</td>
-          <td>{{ post.getCreatedAtAsString() }}</td>
-          <td>
-            <form method="post" action="/admin">
-              <input type="hidden" name="id" value="{{ post.id }}" />
-              <input type="hidden" name="action" value="delete" />
-              <input type="submit" value="delete" />
-            </form>
-            <button
-              class="contrast"
-              data-target="modal-{{ post.id }}"
-              data-post="{{ post.id }}"
-              onclick="toggleModal(event)"
-            >
-              edit
-            </button>
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+
+  <details name="create">
+    <summary>New Post</summary>
+    {% include './_newPostForm.html' %}
+  </details>
+
+  <hr />
+
+  <details name="list" open>
+    <summary>Post List</summary>
+    {% include './_postList.html' %}
+  </details>
 {% endblock %}
 
 {% block scripts %}
-  {% for post in posts %}
-    <dialog id="modal-{{ post.id }}">
-      <article>
-        <header>
-          <button
-            aria-label="Close"
-            rel="prev"
-            data-target="modal-{{ post.id }}"
-            onclick="toggleModal(event)"
-          ></button>
-          <h3>edit post {{ post.slug }}</h3>
-        </header>
-        <form method="post" action="/admin">
-          <input type="hidden" name="id" value="{{ post.id }}" />
-          <input type="hidden" name="action" value="edit" />
-          <label for="author-{{ post.id }}">Author</label>
-          <input
-            type="text"
-            id="author-{{ post.id }}"
-            name="author"
-            placeholder="Text"
-            value="{{ post.author }}"
-          />
-          <label for="title-{{ post.id }}">Title</label>
-          <input
-            type="text"
-            id="title-{{ post.id }}"
-            name="title"
-            placeholder="Text"
-            value="{{ post.title }}"
-          />
-          <label for="teaser-{{ post.id }}">Teaser</label>
-          <input
-            type="text"
-            id="teaser-{{ post.id }}"
-            name="teaser"
-            placeholder="teaser"
-            value="{{ post.teaser }}"
-          />
-          {# TODO: possibility to change or upload image  #}
-          <label for="content-{{ post.id }}">Content</label>
-          <textarea
-            class="editable"
-            id="content-{{ post.id }}"
-            name="content"
-            placeholder="content"
-          >
+  {% if posts and posts.length > 0 %}
+    {% for post in posts %}
+      <dialog id="modal-{{ post.id }}">
+        <article>
+          <header>
+            <button
+              aria-label="Close"
+              rel="prev"
+              data-target="modal-{{ post.id }}"
+              onclick="toggleModal(event)"
+            ></button>
+            <h3>edit post {{ post.slug }}</h3>
+          </header>
+          <form method="post" action="/admin">
+            <input type="hidden" name="id" value="{{ post.id }}" />
+            <input type="hidden" name="action" value="edit" />
+            <label for="author-{{ post.id }}">Author</label>
+            <input
+              type="text"
+              id="author-{{ post.id }}"
+              name="author"
+              placeholder="Text"
+              value="{{ post.author }}"
+            />
+            <label for="title-{{ post.id }}">Title</label>
+            <input
+              type="text"
+              id="title-{{ post.id }}"
+              name="title"
+              placeholder="Text"
+              value="{{ post.title }}"
+            />
+            <label for="teaser-{{ post.id }}">Teaser</label>
+            <input
+              type="text"
+              id="teaser-{{ post.id }}"
+              name="teaser"
+              placeholder="teaser"
+              value="{{ post.teaser }}"
+            />
+            {# TODO: possibility to change or upload image  #}
+            <label for="content-{{ post.id }}">Content</label>
+            <textarea
+              class="editable"
+              id="content-{{ post.id }}"
+              name="content"
+              placeholder="content"
+            >
 {{ post.content | unescape | safe }}</textarea
-          >
-          <input type="submit" value="save" />
-        </form>
-        <footer>
-          <button
-            role="button"
-            class="secondary"
-            data-target="modal-{{ post.id }}"
-            onclick="toggleModal(event)"
-          >
-            Cancel
-          </button>
-        </footer>
-      </article>
-    </dialog>
-  {% endfor %}
-
+            >
+            <input type="submit" value="save" />
+          </form>
+          <footer>
+            <button
+              role="button"
+              class="secondary"
+              data-target="modal-{{ post.id }}"
+              onclick="toggleModal(event)"
+            >
+              Cancel
+            </button>
+          </footer>
+        </article>
+      </dialog>
+    {% endfor %}
+  {% endif %}
   <script src="/js/modal.js"></script>
 {% endblock %}

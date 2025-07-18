@@ -1,0 +1,36 @@
+<form method="post" action="/admin">
+  <input type="hidden" name="action" value="new" />
+  <label for="author-new">Author</label>
+  <input
+    type="text"
+    id="author-new"
+    name="author"
+    placeholder="author"
+    value=""
+  />
+  <label for="title-new">Title</label>
+  <input type="text" id="title-new" name="title" placeholder="title" value="" />
+  <label for="teaser-new">Teaser</label>
+  <input
+    type="text"
+    id="teaser-new"
+    name="teaser"
+    placeholder="teaser"
+    value=""
+  />
+  {# TODO: possibility to upload image  #}
+  <label for="image">Image</label>
+  <select id="image" name="image" required>
+    <option value="colorful-umbrella.jpg" selected>Colorful Umbrella</option>
+    <option value="flowers.jpg">Flowers</option>
+    <option value="sailing.jpg">Sailing</option>
+  </select>
+  <label for="content-new">Content</label>
+  <textarea
+    class="editable"
+    id="content-new"
+    name="content"
+    placeholder="content"
+  ></textarea>
+  <input type="submit" value="create" />
+</form>
