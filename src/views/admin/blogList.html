@@ -1,10 +1,14 @@
 {% extends "../_adminLayout.html" %}
-
+{% import "./_paginationMacro.html" as macro %}
 {% block content %}
   <details name="list" open>
-    <summary>Blog List</summary>
+    <summary>Blog List ({{ postCount }})</summary>
     {% include './_postList.html' %}
+    {{ macro.pagination('admin/blogList.html', pageNr, postCount, pageSize) }}
   </details>
+{% endblock %}
+
+{% block pagination %}
 {% endblock %}
 
 {% block scripts %}

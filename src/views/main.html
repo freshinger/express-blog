@@ -21,7 +21,7 @@
         {% endfor %}
 
         <!-- Pager-->
-        {% if page == 0 %}
+        {% if page == 1 and postCount > pageSize %}
           <div class="d-flex justify-content-end mb-4">
             <a
               class="btn btn-primary text-uppercase"
@@ -29,6 +29,8 @@
               >Older Posts</a
             >
           </div>
+        {% elif page == 1 %}
+
         {% elif (((page + 1) * pageSize) < postCount) %}
           <div class="d-flex   mb-4" style="justify-content: space-between">
             <a

@@ -3,8 +3,11 @@ import { slugFactory } from "../classes/slugFactory";
 import { getDB } from "../db/database";
 import sqlite3 from "sqlite3";
 
-export async function getAllBlogPosts(): Promise<blogPost[]> {
+export async function getAllBlogPosts(page: number): Promise<blogPost[]> {
   const db = getDB();
+  const pageSize = Number.parseInt(process.env.PAGE_SIZE!);
+  const offset = pageSize * page - pageSize;
+
   return new Promise((resolve, reject) => {
     db.all<blogPost>(
       `SELECT 
@@ -19,8 +22,9 @@ export async function getAllBlogPosts(): Promise<blogPost[]> {
       FROM 
         blog_entries
       ORDER BY 
-       createdAt DESC;`,
-      [],
+       createdAt DESC
+       LIMIT ? OFFSET ?;`,
+      [pageSize, offset],
       (err: Error | null, rows: blogPost[]) => {
         if (err) {
           reject(err);

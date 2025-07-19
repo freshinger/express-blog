@@ -1,42 +1,27 @@
 import { Request, Response } from "express";
-import { getAllBlogPosts } from "../models/blogPostsModel";
+import { getAllBlogPosts, getBlogPostCount } from "../models/blogPostsModel";
 import { blogPost } from "../classes/blogPost";
-
-function paginate(
-  posts: blogPost[],
-  pageSize: number,
-  page: number,
-): blogPost[] {
-  const pages: blogPost[][] = [];
-
-  for (let i = 0; i < posts.length; i += pageSize) {
-    const chunk = posts.slice(i, i + pageSize);
-    pages.push(chunk);
-  }
-  if (pages.length > page) {
-    return pages[page];
-  }
-  return [];
-}
+import { validationResult } from "express-validator";
 
 export const indexController = async (req: Request, res: Response) => {
-  let pageSize = 5;
-  if (typeof req.query != undefined && typeof req.query.pageSize === "string") {
-    pageSize = Number.parseInt(req.query.pageSize);
+  const validationresult = validationResult(req);
+  if (validationresult.isEmpty()) {
+    let page = 1;
+    if (req.query && typeof req.query.page === "string") {
+      const pageParsed = Number.parseInt(req.query.page);
+      if (!isNaN(pageParsed) && pageParsed > 0) {
+        page = pageParsed;
+      }
+    }
+    const pageSize = process.env.PAGE_SIZE || 10;
+    const posts = await getAllBlogPosts(page);
+    const postCount = await getBlogPostCount();
+
+    res.render("../views/index.html", {
+      posts,
+      pageNr: page,
+      postCount,
+      pageSize,
+    });
   }
-
-  let page = 0;
-  if (typeof req.query != undefined && typeof req.query.page === "string") {
-    page = Number.parseInt(req.query.page);
-  }
-
-  const posts = await getAllBlogPosts();
-  const blogPosts = paginate(posts, pageSize, page);
-
-  res.render("../views/index.html", {
-    posts: blogPosts,
-    page,
-    postCount: posts.length,
-    pageSize,
-  });
 };

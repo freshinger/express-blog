@@ -107,3 +107,28 @@ export class blogPost implements IBlogPost {
     this.#slug = slug(this.#title);
   }
 }
+
+export class deletedBlogPost extends blogPost {
+  #deletedAt: number;
+  constructor(
+    id?: number,
+    title?: string,
+    image?: string,
+    author?: string,
+    createdAt?: number,
+    teaser?: string,
+    content?: string,
+    slug?: string,
+    deletedAt?: number,
+  ) {
+    super(id, title, image, author, createdAt, teaser, content, slug);
+    this.#deletedAt = deletedAt ?? 0;
+  }
+
+  public get deletedAt(): number {
+    return this.#deletedAt;
+  }
+  public set deletedAt(deletedAt: number) {
+    this.#deletedAt = deletedAt;
+  }
+}

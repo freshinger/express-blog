@@ -7,7 +7,7 @@ import {
 } from "../models/blogPostsModel";
 
 export const getRandomBlogPost = async (req: Request, res: Response) => {
-  const posts = await getAllBlogPosts();
+  const posts = await getAllBlogPosts(1);
   const randomid = Math.floor(Math.random() * posts.length);
 
   const singlePost = await getBlogPostByID(posts[randomid]?.id);

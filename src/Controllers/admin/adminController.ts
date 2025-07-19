@@ -1,8 +1,25 @@
 import { Request, Response } from "express";
-import { getAllBlogPosts } from "../../models/blogPostsModel";
+import { getAllBlogPosts, getBlogPostCount } from "../../models/blogPostsModel";
+import { validationResult } from "express-validator";
 
 export const adminController = async (req: Request, res: Response) => {
-  const posts = await getAllBlogPosts();
-
-  res.render("../views/admin/index.html", { posts });
+  const validationresult = validationResult(req);
+  if (validationresult.isEmpty()) {
+    let page = 1;
+    if (req.query && typeof req.query.page === "string") {
+      const pageParsed = Number.parseInt(req.query.page);
+      if (!isNaN(pageParsed) && pageParsed > 0) {
+        page = pageParsed;
+      }
+    }
+    const pageSize = process.env.PAGE_SIZE || 10;
+    const posts = await getAllBlogPosts(page);
+    const postCount = await getBlogPostCount();
+    res.render("../views/admin/index.html", {
+      posts,
+      pageSize,
+      postCount,
+      pageNr: page,
+    });
+  }
 };

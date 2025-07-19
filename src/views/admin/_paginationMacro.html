@@ -1,0 +1,19 @@
+{% macro pagination(href, pageNr, postCount, pageSize) %}
+  <!-- Pager-->
+  {% if pageNr == 1 and postCount > pageSize %}
+    <div style="display: flex; justify-content: end">
+      <a href="/{{ href }}?page={{ pageNr + 1 }}">Older Posts</a>
+    </div>
+  {% elif pageNr == 1 %}
+
+  {% elif (((pageNr) * pageSize) < postCount) %}
+    <div style="display: flex; justify-content: space-between">
+      <a href="/{{ href }}?page={{ pageNr - 1 }}">Newer Posts</a>
+      <a href="/{{ href }}?page={{ pageNr + 1 }}">Older Posts</a>
+    </div>
+  {% else %}
+    <div>
+      <a href="/{{ href }}?page={{ pageNr - 1 }}">Newer Posts</a>
+    </div>
+  {% endif %}
+{% endmacro %}

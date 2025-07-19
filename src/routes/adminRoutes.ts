@@ -13,8 +13,16 @@ import { adminRestoreController } from "../Controllers/admin/trash/adminRestoreC
 const router = express.Router();
 
 router
-  .get("/", adminController)
-  .get("/blogList.html", adminBlogListController)
+  .get(
+    "/",
+    query("page").if(query("page").notEmpty()).isInt().escape(),
+    adminController,
+  )
+  .get(
+    "/blogList.html",
+    query("page").if(query("page").notEmpty()).isInt().escape(),
+    adminBlogListController,
+  )
   .post(
     "/delete",
     body("id").notEmpty().isInt().escape(),
@@ -51,7 +59,11 @@ router
     body("content").if(body("content").notEmpty()).escape(),
     adminNewController,
   )
-  .get("/trash.html", adminTrashController)
+  .get(
+    "/trash.html",
+    query("page").if(query("page").notEmpty()).isInt().escape(),
+    adminTrashController,
+  )
   .post(
     "/restore",
     body("id").notEmpty().isInt().escape(),

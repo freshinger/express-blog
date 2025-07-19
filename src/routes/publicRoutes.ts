@@ -8,12 +8,16 @@ import { contactController } from "../Controllers/contactController";
 import { indexController } from "../Controllers/indexController";
 import { loginController } from "../Controllers/loginController";
 import { credentialsController } from "../Controllers/credentialsController";
-import { body } from "express-validator";
+import { body, query } from "express-validator";
 
 const router = express.Router();
 
 router
-  .get("/", indexController)
+  .get(
+    "/",
+    query("page").if(query("page").notEmpty()).isInt().escape(),
+    indexController,
+  )
   .get("/about", aboutController)
   .get("/post", getRandomBlogPost)
   .get("/post/:slug", getBlogPost)

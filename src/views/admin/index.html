@@ -1,15 +1,33 @@
 {% extends "../_adminLayout.html" %}
-
+{% import "./_paginationMacro.html" as macro %}
 {% block content %}
   <details name="todos">
-    <summary>Todo List</summary>
+    <summary>Introduction</summary>
+    <h1>Welcome to the Blog Post Admin Dashboard.</h1>
+    <p>This is what you can do:</p>
     <ul>
-      <li>Pagination using DB on Frontend and on admin dashboard</li>
+      <li>
+        <a href="/admin/newPost.html"
+          >Here you can add new posts to your Blog.</a
+        >
+      </li>
+      <li>
+        <a href="/admin/blogList.html"
+          >Here you can edit your posts or soft delete them.</a
+        >
+      </li>
+      <li>
+        <a href="/admin/trash.html"
+          >Soft deleted Posts land in your trash. You have the option to restore
+          them.</a
+        >
+      </li>
     </ul>
   </details>
   <details name="list" open>
-    <summary>Blog List</summary>
+    <summary>Blog List ({{ postCount }})</summary>
     {% include './_postList.html' %}
+    {{ macro.pagination('admin/', pageNr, postCount, pageSize) }}
   </details>
 {% endblock %}
 

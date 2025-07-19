@@ -12,7 +12,6 @@ import {
   createBlogEntryEditHistoryTable,
   createBlogEntryTable,
 } from "./db/database";
-import { Database } from "sqlite3";
 import { unixtimeAsString } from "./nunjucksFilter/unixtimeAsString";
 
 const app = express();
