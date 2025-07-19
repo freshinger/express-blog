@@ -3,31 +3,6 @@ import { slugFactory } from "../classes/slugFactory";
 import { getDB } from "../db/database";
 import sqlite3 from "sqlite3";
 
-export async function getAllSlugs(): Promise<{ slug: string }[]> {
-  const db = getDB();
-  return new Promise((resolve, reject) => {
-    db.all<{ slug: string }>(
-      `SELECT 
-        slug 
-       FROM 
-        blog_entries 
-        UNION 
-       SELECT 
-        slug 
-       FROM 
-       blog_entries_history;`,
-      [],
-      (err: Error | null, slugs: { slug: string }[]) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(slugs);
-        }
-      },
-    );
-  });
-}
-
 export async function getAllBlogPosts(): Promise<blogPost[]> {
   const db = getDB();
   return new Promise((resolve, reject) => {
@@ -237,41 +212,6 @@ export async function editPost(
         blogPost.content,
         id,
       ],
-      resolve(db),
-    );
-  });
-}
-export async function createHistory(id: number): Promise<sqlite3.Database> {
-  const db = getDB();
-  return new Promise((resolve, reject) => {
-    return db.run(
-      `
-      INSERT INTO 
-        blog_entries_history
-      ( 
-        title,
-        image,
-        author,
-        createdAt,
-        teaser,
-        content,
-        slug,
-        historyTo
-      ) 
-        SELECT 
-          title,
-          image,
-          author,
-          createdAt,
-          teaser,
-          content,
-          slug,
-          id
-        FROM
-          blog_entries  
-        WHERE 
-          id = ?;`,
-      id,
       resolve(db),
     );
   });

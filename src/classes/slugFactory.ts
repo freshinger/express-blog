@@ -1,5 +1,5 @@
 import { getDB } from "../db/database";
-import { getAllSlugs } from "../models/blogPostsModel";
+import { getAllSlugs } from "../models/getAllSlugsModel";
 
 /**
  * a slug is used in the url. slugs have to be unique for SEO and web crawler purposes.

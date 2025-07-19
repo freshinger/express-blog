@@ -7,6 +7,8 @@ import { adminEditController } from "../Controllers/admin/adminEditController";
 import { adminEditFormController } from "../Controllers/admin/adminEditFormController";
 import { adminNewController } from "../Controllers/admin/adminNewController";
 import { adminNewFormController } from "../Controllers/admin/adminNewFormController";
+import { adminTrashController } from "../Controllers/admin/trash/adminTrashController";
+import { adminRestoreController } from "../Controllers/admin/trash/adminRestoreController";
 
 const router = express.Router();
 
@@ -48,6 +50,12 @@ router
     body("image").if(body("image").notEmpty()).escape(),
     body("content").if(body("content").notEmpty()).escape(),
     adminNewController,
+  )
+  .get("/trash.html", adminTrashController)
+  .post(
+    "/restore",
+    body("id").notEmpty().isInt().escape(),
+    adminRestoreController,
   );
 
 export default router;

@@ -1,0 +1,46 @@
+{% if posts and posts.length > 0 %}
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">restore</th>
+        <th scope="col">slug</th>
+        <th scope="col">title</th>
+        <th scope="col">author</th>
+        <th scope="col">createdAt</th>
+        {#<th scope="col">delete</th>#}
+      </tr>
+    </thead>
+    <tbody>
+      {% for post in posts %}
+        <tr>
+          <td scope="row">
+            <div class="grid">
+              <form method="post" action="/admin/restore">
+                <input type="hidden" name="id" value="{{ post.id }}" />
+                <input type="submit" value="restore" />
+              </form>
+            </div>
+          </td>
+          <td>{{ post.slug }}</td>
+          <td>{{ post.title }}</td>
+          <td>{{ post.author }}</td>
+          <td>{{ post.createdAt | unixtimeAsString }}</td>
+          <td>
+            {#
+            <button
+              data-target="delete-confirm-modal"
+              data-id="{{ post.id }}"
+              data-slug="{{ post.slug }}"
+              onclick="toggleModal(event)"
+              class="pico-background-red-500"
+            >
+              delete
+            </button>#}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p>no trash, good.</p>
+{% endif %}

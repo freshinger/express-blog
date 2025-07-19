@@ -8,7 +8,8 @@ import { basicAuth } from "./middlewares/basicAuth";
 import { unescape } from "./nunjucksFilter/unescape";
 import {
   connectDB,
-  createBlogEntryHistoryTable,
+  createBlogEntryDeleteHistoryTable,
+  createBlogEntryEditHistoryTable,
   createBlogEntryTable,
 } from "./db/database";
 import { Database } from "sqlite3";
@@ -33,7 +34,10 @@ connectDB()
     return await createBlogEntryTable(db);
   })
   .then(async (db) => {
-    return await createBlogEntryHistoryTable(db);
+    return await createBlogEntryEditHistoryTable(db);
+  })
+  .then(async (db) => {
+    return await createBlogEntryDeleteHistoryTable(db);
   })
   .then(
     () => {
