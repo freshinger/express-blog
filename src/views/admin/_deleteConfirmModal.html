@@ -1,0 +1,23 @@
+<dialog id="delete-confirm-modal">
+  <article>
+    <header>
+      <button
+        aria-label="Close"
+        rel="prev"
+        data-target="delete-confirm-modal"
+        onclick="toggleModal(event)"
+      ></button>
+      <h3>Confirm delete!</h3>
+    </header>
+    Blog Post with Slug <span id="confirmModalSlug"></span> will be deleted.
+    Proceed?
+    <footer>
+      <form method="post" action="/admin/delete">
+        <input type="hidden" name="id" id="confirmModalId" value="" />
+        <input type="submit" value="delete" class="pico-background-red-500" />
+      </form>
+    </footer>
+  </article>
+</dialog>
+
+<script src="/js/modal.js"></script>

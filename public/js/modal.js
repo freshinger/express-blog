@@ -17,12 +17,20 @@ let visibleModal = null;
 const toggleModal = (event) => {
   event.preventDefault();
   const modal = document.getElementById(event.currentTarget.dataset.target);
+  //for delete confirm
+  const id = event.currentTarget.dataset.id;
+  const slug = event.currentTarget.dataset.slug;
   if (!modal) return;
-  modal && (modal.open ? closeModal(modal) : openModal(modal));
+  modal && (modal.open ? closeModal(modal) : openModal(modal, id, slug));
 };
 
 // Open modal
-const openModal = (modal) => {
+const openModal = (modal, id, slug) => {
+  //for delete confirm
+  const modalIdElement = document.getElementById("confirmModalId");
+  const modalSlugElement = document.getElementById("confirmModalSlug");
+  modalIdElement.setAttribute("value", id);
+  modalSlugElement.innerText = slug;
   const { documentElement: html } = document;
   const scrollbarWidth = getScrollbarWidth();
   if (scrollbarWidth) {

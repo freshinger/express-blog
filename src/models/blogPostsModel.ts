@@ -42,7 +42,9 @@ export async function getAllBlogPosts(): Promise<blogPost[]> {
         content,
         slug 
       FROM 
-        blog_entries;`,
+        blog_entries
+      ORDER BY 
+       createdAt DESC;`,
       [],
       (err: Error | null, rows: blogPost[]) => {
         if (err) {

@@ -27,18 +27,15 @@
           <td>{{ post.author }}</td>
           <td>{{ post.createdAt | unixtimeAsString }}</td>
           <td>
-            <div class="grid">
-              <div>
-                <form method="post" action="/admin/delete">
-                  <input type="hidden" name="id" value="{{ post.id }}" />
-                  <input
-                    type="submit"
-                    value="delete"
-                    class="pico-background-red-500"
-                  />
-                </form>
-              </div>
-            </div>
+            <button
+              data-target="delete-confirm-modal"
+              data-id="{{ post.id }}"
+              data-slug="{{ post.slug }}"
+              onclick="toggleModal(event)"
+              class="pico-background-red-500"
+            >
+              delete
+            </button>
           </td>
         </tr>
       {% endfor %}
